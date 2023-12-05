@@ -1,12 +1,20 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const forumPostSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   content: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
-  // Additional fields for forum posts (e.g., likes, comments, etc.).
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  comments: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+      comment: { type: String, required: true },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
+  // Additional fields for forum posts can be added here.
 });
 
-const ForumPost = mongoose.model("ForumPost", forumPostSchema);
+export const ForumPost = mongoose.model('ForumPost', forumPostSchema);
 
-module.exports = ForumPost;
+// export default ForumPost;
