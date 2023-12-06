@@ -1,0 +1,29 @@
+<!-- index.html -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-Time Pet Adoption</title>
+  </head>
+  <body>
+    <h1>Real-Time Pet Adoption</h1>
+
+    <ul id="petList"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      // Listen for the 'newPet' event
+      socket.on("newPet", (newPet) => {
+        // Update the UI with the new pet
+        const petList = document.getElementById("petList");
+        const listItem = document.createElement("li");
+        listItem.textContent = `New Pet: ${newPet.name} (${newPet.species})`;
+        petList.appendChild(listItem);
+      });
+    </script>
+  </body>
+</html>
