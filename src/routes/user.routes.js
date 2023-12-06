@@ -1,7 +1,14 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.controller.js";
+import passport from "passport";
+import {
+  loginUser,
+  registerUser,
+  userProfile,
+} from "../controllers/user.controller.js";
 
 import { upload } from "../middlewares/multer.middleware.js";
+
+const authenticateMiddleware = passport.authenticate("jwt", { session: false });
 
 const router = Router();
 
@@ -18,5 +25,10 @@ router.route("/register").post(
   ]),
   registerUser
 );
+
+// registerUser.
+router.route("/login").post(loginUser);
+
+router.route("/profile").get(authenticateMiddleware, userProfile);
 
 export default router;

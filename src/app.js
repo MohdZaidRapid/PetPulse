@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import axios from "axios";
+import passportPort from "./utils/jwtStrategy.js";
 
 const app = express();
 
@@ -11,12 +11,13 @@ app.use(
     credentials: true,
   })
 );
-
 app.use(
   express.json({
     limit: "16kb",
   })
 );
+app.use(passportPort.initialize());
+
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
