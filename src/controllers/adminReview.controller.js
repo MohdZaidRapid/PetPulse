@@ -1,6 +1,15 @@
 import { AdoptionApplication } from "../models/adoptionApplication.model.js";
 
 // Controller to review and update adoption applications by the admin
+
+export const listReviewAdoptionApplication = async (req, res) => {
+  try {
+    const listAllReviewAdoptionApplication = await AdoptionApplication.find();
+    return res.status(201).json(listAllReviewAdoptionApplication);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 export const reviewAdoptionApplication = async (req, res) => {
   try {
     const { applicationId, status } = req.body;
