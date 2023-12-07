@@ -19,6 +19,7 @@ const submitAdoptionApplication = async (req, res) => {
     }
 
     const application = await AdoptionApplication.create({ user, virtualPet });
+    
 
     res.status(201).json({
       application,

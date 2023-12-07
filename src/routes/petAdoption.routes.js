@@ -34,6 +34,11 @@ router.put(
 );
 
 // Route to notify users about the status of their adoption application
-router.post("/notify-adoption-status", notifyAdoptionStatus);
+router.post(
+  "/notify-adoption-status",
+  authenticateMiddleware,
+  adminAuthorization,
+  notifyAdoptionStatus
+);
 
 export default router;

@@ -21,9 +21,9 @@ const notifyAdoptionStatus = async (req, res) => {
 
     // Send a notification to the user about the adoption application status
     await sendMail(
-      application?.user?.email,
-      `Adoption Application Status Update for ${application.pet}`,
-      `Your adoption application for ${application.pet} is ${status}.`
+      user?.email,
+      `Adoption Application Status Update for ${application.virtualPet}`,
+      `Your adoption application for ${application.virtualPet} is ${status}.`
     );
 
     res.json({ message: "Notification sent successfully" });
