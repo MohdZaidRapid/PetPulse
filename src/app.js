@@ -42,10 +42,13 @@ app.use(cookieParser());
 // routes
 import userRouter from "./routes/user.routes.js";
 import virtualPetRoutes from "./routes/pets.routes.js";
+import petAdoptionRoutes from "./routes/petAdoption.routes.js";
 
 app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/virtualpets", virtualPetRoutes);
+
+app.use("/api/v1/adoption", petAdoptionRoutes);
 
 // http://localhost:8000/api/v1/users/register
 
