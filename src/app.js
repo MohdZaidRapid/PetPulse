@@ -7,7 +7,6 @@ import http from "http";
 
 const app = express();
 const server = http.createServer(app);
-
 const io = new Server(server, { cors: "*" });
 
 let likes = 0;
@@ -42,8 +41,11 @@ app.use(cookieParser());
 
 // routes
 import userRouter from "./routes/user.routes.js";
+import virtualPetRoutes from "./routes/pets.routes.js";
 
 app.use("/api/v1/users", userRouter);
+
+app.use("/api/v1/virtualpets", virtualPetRoutes);
 
 // http://localhost:8000/api/v1/users/register
 

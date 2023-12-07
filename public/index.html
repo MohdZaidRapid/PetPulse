@@ -26,16 +26,25 @@
       socket.on("connect", () => {
         console.log("connected");
       });
-      const btn = document.querySelector("button");
-      const likes = document.getElementById("likes");
+      // ... (previous code)
 
-      btn.addEventListener("click", () => {
-        socket.emit("liked");
+      // Listen for newPet event from the server
+      socket.on("newPet", (newPet) => {
+        // Add the new pet to the existing list of pets
+        const petList = document.getElementById("petList");
+        const petCard = document.createElement("div");
+        petCard.className = "petCard";
+        petCard.innerHTML = `
+    <h3>${newPet.species} - ${newPet.name}</h3>
+    <p><strong>Age:</strong> ${newPet.age} years</p>
+    <p><strong>Description:</strong> ${newPet.description}</p>
+    <p><strong>Happiness:</strong> ${newPet.happiness}</p>
+    <p><strong>Health:</strong> ${newPet.health}</p>
+  `;
+        petList.appendChild(petCard);
       });
 
-      socket.on("likeupdate", (count) => {
-        likes.textContent = count;
-      });
+      // ... (remaining code)
     </script>
   </body>
 </html>
