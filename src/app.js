@@ -2,8 +2,26 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import passportPort from "./utils/jwtStrategy.js";
+import { Server } from "socket.io";
+import http from "http";
 
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, { cors: "*" });
+
+let likes = 0;
+
+io.on("connection", (socket) => {
+  socket.emit("likeupdate", likes);
+  socket.on("liked", () => {
+    likes++;
+    socket.emit("likeupdate", likes);
+    socket.broadcast.emit("likeupdate", likes);
+  });
+});
+
+// io.listen(3000);
 
 app.use(
   cors({
@@ -29,4 +47,4 @@ app.use("/api/v1/users", userRouter);
 
 // http://localhost:8000/api/v1/users/register
 
-export { app };
+export { server };

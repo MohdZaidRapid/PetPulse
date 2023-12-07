@@ -8,21 +8,33 @@
     <title>Real-Time Pet Adoption</title>
   </head>
   <body>
-    <h1>Real-Time Pet Adoption</h1>
+    <button>
+      <h1 id="likes">0</h1>
+    </button>
 
     <ul id="petList"></ul>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"
+      integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script>
-      const socket = io();
+      const socket = io("http://127.0.0.1:8000");
 
-      // Listen for the 'newPet' event
-      socket.on("newPet", (newPet) => {
-        // Update the UI with the new pet
-        const petList = document.getElementById("petList");
-        const listItem = document.createElement("li");
-        listItem.textContent = `New Pet: ${newPet.name} (${newPet.species})`;
-        petList.appendChild(listItem);
+      socket.on("connect", () => {
+        console.log("connected");
+      });
+      const btn = document.querySelector("button");
+      const likes = document.getElementById("likes");
+
+      btn.addEventListener("click", () => {
+        socket.emit("liked");
+      });
+
+      socket.on("likeupdate", (count) => {
+        likes.textContent = count;
       });
     </script>
   </body>
