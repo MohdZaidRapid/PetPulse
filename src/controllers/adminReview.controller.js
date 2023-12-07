@@ -1,4 +1,5 @@
 import { AdoptionApplication } from "../models/adoptionApplication.model.js";
+import { sendMail } from "../utils/sendNotification.js";
 
 // Controller to review and update adoption applications by the admin
 
@@ -12,9 +13,17 @@ export const listReviewAdoptionApplication = async (req, res) => {
 };
 export const reviewAdoptionApplication = async (req, res) => {
   try {
+    const { email } = req.user;
+    // console.log(email);
+    // console.log(req.user.email);
     const { applicationId, status } = req.body;
 
-    const application = await AdoptionApplication.findById(applicationId);
+    // const application =
+    //   await AdoptionApplication.findById(applicationId).populate("virtualPet");
+    const application = await AdoptionApplication.findById(applicationId)
+      .populate("virtualPet")
+      .populate("user");
+    console.log(application);
 
     if (!application) {
       return res.status(404).json({ error: "Adoption application not found" });
@@ -31,6 +40,11 @@ export const reviewAdoptionApplication = async (req, res) => {
 
     application.status = status;
     await application.save();
+    await sendMail(
+      email,
+      `Adoption Application Status Update for species ${application.virtualPet.species} and id ${application.virtualPet._id}`,
+      `Your adoption application for ${application.virtualPet.name} is ${application.status}.`
+    );
 
     res.json({
       application,
