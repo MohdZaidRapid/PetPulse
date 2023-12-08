@@ -1,4 +1,4 @@
-import { VirtualPet } from "../models/virtualpet.model.js";
+import { VirtualPet } from "../models/virtualPet.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 // Controller to get all virtual pets
@@ -59,3 +59,4 @@ const addVirtualPet = async (req, res) => {
 };
 
 export { getAllVirtualPets, addVirtualPet };
+//
