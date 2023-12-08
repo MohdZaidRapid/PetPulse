@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -10,6 +11,17 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ["user", "admin"], default: "user" }, // URL or file reference for the profile picture
   adoptedPets: [{ type: mongoose.Schema.Types.ObjectId, ref: "VirtualPet" }],
 });
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+
+  next();
+});
+
+userSchema.methods.isPasswordCorrect = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 userSchema.methods.generateAuthToken = async function () {
   try {
