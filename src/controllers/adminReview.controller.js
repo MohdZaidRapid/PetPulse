@@ -24,7 +24,7 @@ export const reviewAdoptionApplication = async (req, res) => {
     const application = await AdoptionApplication.findById(applicationId)
       .populate("virtualPet")
       .populate("user");
-    console.log(application);
+    // console.log(application);
 
     if (!application) {
       return res.status(404).json({ error: "Adoption application not found" });
@@ -40,17 +40,11 @@ export const reviewAdoptionApplication = async (req, res) => {
     }
 
     application.status = status;
-    if (application.status == "Approved") {
-      await VirtualPet.updateOwner(
-        application.virtualPet._id,
-        application.user._id
-      );
-
-      return res.json({
-        application,
-        message: "Adoption application approved, and pet adopted successfully",
-      });
-    }
+    console.log(application.status);
+    // if (application.status === "Approved") {
+    //   // Update the virtual pet's owner using the method
+    //   await application.virtualPet.updateOwner(application.user._id);
+    // }
 
     await application.save();
     await sendMail(

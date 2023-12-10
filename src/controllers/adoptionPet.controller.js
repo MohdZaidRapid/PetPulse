@@ -9,7 +9,7 @@ const adoptPet = async (req, res) => {
     // Check if the virtual pet is available for adoption
     const virtualPet = await VirtualPet.findById(virtualPetId);
 
-    if (!virtualPet || virtualPet.owner) {
+    if (!virtualPet) {
       return res
         .status(404)
         .json({ error: "Virtual pet not found or already adopted." });
@@ -39,7 +39,7 @@ const adoptPet = async (req, res) => {
     await virtualPet.save();
 
     // Remove the adoption application (assuming it's approved)
-    await AdoptionApplication.findOneAndRemove({
+    await AdoptionApplication.findOneAndDelete({
       user: req.user._id,
       virtualPet: virtualPetId,
     });

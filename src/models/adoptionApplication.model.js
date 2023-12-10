@@ -15,6 +15,9 @@ const adoptionApplicationSchema = new mongoose.Schema({
   // Additional fields for application details (e.g., reason for adoption, date submitted, etc.).
 });
 
+
+
+
 export const AdoptionApplication = mongoose.model(
   "AdoptionApplication",
   adoptionApplicationSchema
