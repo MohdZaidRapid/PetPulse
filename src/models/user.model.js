@@ -6,9 +6,9 @@ import bcrypt from "bcrypt";
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  avatar: { type: String, required: true },
+  avatar: { type: String, required: true }, // URL or file reference for the profile picture
   password: { type: String, required: true },
-  role: { type: String, enum: ["user", "admin"], default: "user" }, // URL or file reference for the profile picture
+  role: { type: String, enum: ["user", "admin"], default: "user" },
   adoptedPets: [{ type: mongoose.Schema.Types.ObjectId, ref: "VirtualPet" }],
 });
 

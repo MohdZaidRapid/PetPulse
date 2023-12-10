@@ -1,3 +1,4 @@
+import { User } from "../models/user.model.js";
 import { VirtualPet } from "../models/virtualPet.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -34,7 +35,10 @@ const getAllVirtualPets = async (req, res) => {
     const skip = req.query.skip ? parseInt(req.query.skip) : 0;
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;
 
-    const virtualPets = await VirtualPet.find(filter).skip(skip).limit(limit);
+    const virtualPets = await VirtualPet.find(filter)
+      .populate("owner")
+      .skip(skip)
+      .limit(limit);
 
     res
       .status(201)
@@ -50,7 +54,31 @@ const getAllVirtualPets = async (req, res) => {
 // Controller to add a new virtual pet
 const addVirtualPet = async (req, res) => {
   try {
-    const newPet = await VirtualPet.create(req.body);
+    // console.log(req.user);
+    // const newPets = req.body.map((pet) => ({
+    //   ...pet,
+    //   owner: req.user._id,
+    // }));
+
+    const { name, species, breed, age, description, happiness, health } =
+      req.body;
+    const newPet = await VirtualPet({
+      name,
+      species,
+      breed,
+      age,
+      description,
+      happiness,
+      health,
+    });
+    newPet.owner = req.user._id;
+    await newPet.save();
+
+    await User.findByIdAndUpdate(
+      req.user._id,
+      { $push: { adoptedPets: newPet._id } },
+      { new: true }
+    );
     res.status(201).json(newPet);
   } catch (error) {
     console.error(error);
