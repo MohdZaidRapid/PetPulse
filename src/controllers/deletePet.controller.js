@@ -13,13 +13,18 @@ const deleteVirtualPet = async (req, res) => {
     }
 
     // Check if the logged-in user is an admin
-    if (req.user.role !== "admin") {
-      // If not an admin, check if the user is the owner of the pet
-      if (deletedPet.owner.toString() !== req.user._id.toString()) {
-        return res.status(403).json({
-          error: "Permission denied. You are not the owner of this pet.",
+    if (
+      !(
+        req.user.role === "admin" ||
+        deletedPet.owner.toString() === req.user._id.toString()
+      )
+    ) {
+      return res
+        .status(403)
+        .json({
+          error:
+            "Permission denied. You are not the owner of this pet or an admin.",
         });
-      }
     }
 
     // Remove the virtual pet ID from the adoptedPets array in the user document

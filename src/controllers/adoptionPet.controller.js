@@ -6,11 +6,8 @@ const adoptPet = async (req, res) => {
   try {
     const { virtualPetId } = req.body;
 
-    
     // Check if the virtual pet is available for adoption
     const virtualPet = await VirtualPet.findById(virtualPetId);
-
-    
 
     if (!virtualPet || virtualPet.owner) {
       return res

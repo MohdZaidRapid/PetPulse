@@ -75,7 +75,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
 const userProfile = asyncHandler(async (req, res, next) => {
   // const user = req.user;
-  const user = await User.find({}).populate("adoptedPets");
+  const user = await User.find({ _id: req.user._id }).populate("adoptedPets");
   // console.log(user);
   res.status(200).json(new ApiResponse(200, user, "user"));
 });

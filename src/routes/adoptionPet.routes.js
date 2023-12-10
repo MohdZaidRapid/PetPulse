@@ -7,6 +7,6 @@ import { authenticateMiddleware } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 // Adopt Pet Route
-router.post("/api/user/adopt", authenticateMiddleware, adoptPet);
+router.post("/user/adopt", authenticateMiddleware, adoptPet);
 
 export default router;

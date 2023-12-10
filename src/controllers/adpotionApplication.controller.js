@@ -4,7 +4,8 @@ import { AdoptionApplication } from "../models/adoptionApplication.model.js";
 // Controller to submit adoption applications
 const submitAdoptionApplication = async (req, res) => {
   try {
-    const { user, virtualPet } = req.body;
+    const user = req.user._id;
+    const { virtualPet } = req.body;
 
     // Check if the user has already submitted an application for the same pet
     const existingApplication = await AdoptionApplication.findOne({
@@ -19,7 +20,6 @@ const submitAdoptionApplication = async (req, res) => {
     }
 
     const application = await AdoptionApplication.create({ user, virtualPet });
-    
 
     res.status(201).json({
       application,

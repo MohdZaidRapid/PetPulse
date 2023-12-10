@@ -1,4 +1,5 @@
 import { AdoptionApplication } from "../models/adoptionApplication.model.js";
+import { VirtualPet } from "../models/virtualPet.model.js";
 import { sendMail } from "../utils/sendNotification.js";
 
 // Controller to review and update adoption applications by the admin
@@ -39,6 +40,18 @@ export const reviewAdoptionApplication = async (req, res) => {
     }
 
     application.status = status;
+    if (application.status == "Approved") {
+      await VirtualPet.updateOwner(
+        application.virtualPet._id,
+        application.user._id
+      );
+
+      return res.json({
+        application,
+        message: "Adoption application approved, and pet adopted successfully",
+      });
+    }
+
     await application.save();
     await sendMail(
       email,
