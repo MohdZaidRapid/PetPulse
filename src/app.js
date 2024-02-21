@@ -39,7 +39,10 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// routes
+// routes for all
+
+
+// user routes
 import userRouter from "./routes/user.routes.js";
 import virtualPetRoutes from "./routes/pets.routes.js";
 import petAdoptionRoutes from "./routes/petAdoption.routes.js";
